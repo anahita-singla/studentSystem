@@ -72,34 +72,33 @@ public class Company {
 
     public void chooseCompany(List<Company> companies, PlacementCell placementCell) {
         System.out.println("Choose To enter into mode of Available Companies:-");
-        int k=1;
+        int k = 1;
         for (Company company : companies)
-            System.out.println("\t "+k++ +") "+ company.companyName);
+            System.out.println("\t " + k++ + ") " + company.companyName);
         int selectedCompanyidx = scn.nextInt();
-        Company company=companies.get(selectedCompanyidx-1);
-            
-                int opt;
-                do {
-                    System.out.println("Welcome " + company.companyName
-                            + "\n\t1) Update Role\n\t2) Update Package\n\t3) Update CGPA criteria\n\t4) Register To Institute Drive\n\t5) Back");
-                    opt = scn.nextInt();
-                    switch (opt) {
-                        case 1:
-                            scn.nextLine();
-                            company.updateRole(scn.nextLine());
-                            break;
-                        case 2:
-                            company.updateCtc(scn.nextFloat());
-                            break;
-                        case 3:
-                            company.updateCGPA(scn.nextFloat());
-                            break;
-                        case 4:
-                            company.registerToInstitute(placementCell);
-                            break;
-                    }
-                } while (opt > 0 && opt < 5);
-               
+        Company company = companies.get(selectedCompanyidx - 1);
+
+        int opt;
+        do {
+            System.out.println("Welcome " + company.companyName
+                    + "\n\t1) Update Role\n\t2) Update Package\n\t3) Update CGPA criteria\n\t4) Register To Institute Drive\n\t5) Back");
+            opt = scn.nextInt();
+            switch (opt) {
+                case 1:
+                    scn.nextLine();
+                    company.updateRole(scn.nextLine());
+                    break;
+                case 2:
+                    company.updateCtc(scn.nextFloat());
+                    break;
+                case 3:
+                    company.updateCGPA(scn.nextFloat());
+                    break;
+                case 4:
+                    company.registerToInstitute(placementCell);
+                    break;
+            }
+        } while (opt > 0 && opt < 5);
 
     }
 
@@ -107,8 +106,8 @@ public class Company {
         System.out.println("List of All available companies is as follows:");
         int i = 1;
         for (Company company : companies)
-            System.out.println("\n\t" + i++ + " Company Name: " + company.companyName + "\n\t\tCompany role offering: "
-                    + company.role + "\n\t\tCompany Package" + company.ctc + "\n\t\tCompany CGPA criteria "
+            System.out.println("\n\t" + i++ + " Company Name: " + company.companyName + "\n\tCompany role offering: "
+                    + company.role + "\n\tCompany Package" + company.ctc + "\n\tCompany CGPA criteria "
                     + company.minCGPA);
     }
 
@@ -126,6 +125,10 @@ public class Company {
 
     public float getCompanyMinCGPA() {
         return this.minCGPA;
+    }
+
+    public void displayInfo() {
+
     }
 
 }

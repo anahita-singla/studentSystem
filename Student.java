@@ -1,12 +1,9 @@
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Scanner;
-
-// import javax.lang.model.util.ElementScanner14;
 
 public class Student {
     private String name;
@@ -38,8 +35,14 @@ public class Student {
         this.CGPA = CGPA;
     }
 
-    public void offerReply(String choice) {
-
+    public void offerReply(boolean accept) {
+        if (accept) {
+            PriorityQueue<Company> myCompanies = nameToRegisteredCompanies.get(this.name);
+            System.out.println("Congratulations " + this.name + "!!! You have accepted the offer by "
+                    + myCompanies.peek().getcompanyName());
+            this.status = "offered";
+        } else
+            this.status = "blocked";
     }
 
     public void setStudentDetails() {
@@ -74,7 +77,8 @@ public class Student {
         return this.name;
     }
 
-    public void chooseStudent(List<Company> companyList, PlacementCell placementCell, HashMap<String, List<Student>> companytoSelectedStudent) {
+    public void chooseStudent(List<Company> companyList, PlacementCell placementCell,
+            HashMap<String, List<Student>> companytoSelectedStudent) {
         int opt;
         do {
             System.out.println("Welcome " + this.getStudentName()
@@ -87,17 +91,23 @@ public class Student {
                     break;
                 case 2:
                     this.getAvailableCompanies(companyList);
-                    this.registerToCompany(companyList.get(scn.nextInt() - 1),companytoSelectedStudent);
+                    this.registerToCompany(companyList.get(scn.nextInt() - 1), companytoSelectedStudent);
                     break;
-                case 3: this.getAvailableCompanies(companyList);
+                case 3:
+                    this.getAvailableCompanies(companyList);
                     break;
-                case 4:this.getStatus();
+                case 4:
+                    this.getStatus();
                     break;
                 case 5:
+                    System.out.print("\nEnter new CGPA:");
+                    this.CGPA = scn.nextFloat();
                     break;
                 case 6:
+                    this.offerReply(true);
                     break;
                 case 7:
+                    this.offerReply(false);
                     break;
             }
 
@@ -105,23 +115,24 @@ public class Student {
     }
 
     private void getStatus() {
-        if(this.status.equals("blocked"))
+        if (this.status.equals("blocked"))
             System.out.println("You are blocked from placement drive");
-        else{
-            PriorityQueue<Company> myCompanies=nameToRegisteredCompanies.get(this.name);
-            if(myCompanies.isEmpty()){
+        else {
+            PriorityQueue<Company> myCompanies = nameToRegisteredCompanies.get(this.name);
+            if (myCompanies.isEmpty()) {
                 System.out.println("Sorry! You have no offers yet");
                 return;
             }
-            System.out.println("Congratulations "+ this.name +". You have been offered by "+ myCompanies.peek().getcompanyName() + ".Please accept the offer.");
-            this.status="offered";
-            this.highestCtc=myCompanies.peek().getCompanyCtc();
+            System.out.println("Congratulations " + this.name + ". You have been offered by "
+                    + myCompanies.peek().getcompanyName() + ".Please accept the offer.");
+            this.status = "offered";
+            this.highestCtc = myCompanies.peek().getCompanyCtc();
         }
     }
 
     private void registerToCompany(Company company, HashMap<String, List<Student>> companytoSelectedStudent) {
-        nameToRegisteredCompanies.putIfAbsent(this.name, new PriorityQueue<>((a,b)->{
-            return (int)(b.getCompanyCtc() - a.getCompanyCtc());
+        nameToRegisteredCompanies.putIfAbsent(this.name, new PriorityQueue<>((a, b) -> {
+            return (int) (b.getCompanyCtc() - a.getCompanyCtc());
         }));
         PriorityQueue<Company> companies = nameToRegisteredCompanies.get(this.name);
 
@@ -129,8 +140,8 @@ public class Student {
             companies.add(company);
             System.out.println(
                     "Successfully registered for " + company.getCompanyRole() + " role at " + company.getcompanyName());
-            companytoSelectedStudent.putIfAbsent(company.getcompanyName(),new ArrayList<>());
-            List<Student> students=companytoSelectedStudent.get(company.getcompanyName());
+            companytoSelectedStudent.putIfAbsent(company.getcompanyName(), new ArrayList<>());
+            List<Student> students = companytoSelectedStudent.get(company.getcompanyName());
             students.add(this);
         }
     }
@@ -149,6 +160,10 @@ public class Student {
         System.out.print("Name: " + this.name + "\nRollNo: " + this.rollNo + "\nCGPA: " + this.CGPA + "\nBranch: "
                 + this.Branch);
         System.out.println();
+    }
+
+    public String getStudentStatus() {
+        return this.status;
     }
 
 }
